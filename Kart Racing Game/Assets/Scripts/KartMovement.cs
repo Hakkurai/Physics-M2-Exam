@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class KartController : MonoBehaviour
@@ -15,6 +16,9 @@ public class KartController : MonoBehaviour
     private Rigidbody rb;
     private bool isGrounded;
     private Vector3 normalVector = Vector3.up;
+    private float defaultSpeed;
+    private bool isBoosted = false;
+    private bool isDebuffed = false;
 
     void Start()
     {
@@ -22,6 +26,8 @@ public class KartController : MonoBehaviour
         rb.centerOfMass = new Vector3(0, -0.5f, -0.3f); // Moves mass slightly backward to prevent front heaviness
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         rb.angularDamping = 15f; // Slows down unstable rotations
+
+        defaultSpeed = speed;
     }
 
     void FixedUpdate()
@@ -58,7 +64,15 @@ public class KartController : MonoBehaviour
 
     void MoveKart()
     {
-        float moveInput = Input.GetAxis("Vertical") * speed;
+        float currentSpeed = speed;
+
+        // Apply Gold Boost (Only works when holding Shift)
+        if (isBoosted && Input.GetKey(KeyCode.LeftShift))
+        {
+            currentSpeed += 100f;
+        }
+
+        float moveInput = Input.GetAxis("Vertical") * currentSpeed;
         float turnInput = Input.GetAxis("Horizontal") * turnSpeed * Time.fixedDeltaTime;
 
         rb.AddForce(transform.forward * moveInput, ForceMode.Acceleration);
@@ -93,5 +107,43 @@ public class KartController : MonoBehaviour
             localEuler.z = 0;
         }
         transform.localEulerAngles = localEuler;
+    }
+
+    // Handle Coin Effects (These methods integrate without adding new ones)
+    public void AddPoints(int points)
+    {
+        Debug.Log("Added " + points + " points!");
+    }
+
+    public void ApplyGoldBoost()
+    {
+        if (!isBoosted)
+        {
+            isBoosted = true;
+            StartCoroutine(RemoveGoldBoostAfterTime(5f));
+        }
+    }
+
+    public void ApplySilverDebuff()
+    {
+        if (!isDebuffed)
+        {
+            isDebuffed = true;
+            speed -= 50f;
+            StartCoroutine(RemoveSilverDebuffAfterTime(5f));
+        }
+    }
+
+    private IEnumerator RemoveGoldBoostAfterTime(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        isBoosted = false;
+    }
+
+    private IEnumerator RemoveSilverDebuffAfterTime(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        speed = defaultSpeed;
+        isDebuffed = false;
     }
 }
