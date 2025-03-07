@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;  // Import for scene management
 using TMPro;
 
 public class LapCounter : MonoBehaviour
@@ -22,11 +23,22 @@ public class LapCounter : MonoBehaviour
                 currentLap++;        // Increment lap
                 UpdateLapText();     // Update UI
             }
+
+            // Check if all laps are completed
+            if (currentLap >= totalLaps)
+            {
+                GoToWinScene();      // Load WinScene
+            }
         }
     }
 
     private void UpdateLapText()
     {
         lapText.text = "Lap: " + currentLap + "/" + totalLaps;
+    }
+
+    private void GoToWinScene()
+    {
+        SceneManager.LoadScene("WinScene");  // Change to WinScene
     }
 }
