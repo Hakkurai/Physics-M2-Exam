@@ -3,13 +3,13 @@ using TMPro;
 
 public class PointsManager : MonoBehaviour
 {
-    public static PointsManager Instance;  // Singleton to access from other scripts
-    public TextMeshProUGUI pointsText;     // Reference to the text UI
-    private int currentPoints = 0;         // Track current points
+    public static PointsManager Instance;  
+    public TextMeshProUGUI pointsText;     
+    private int currentPoints = 0;         
 
     private void Awake()
     {
-        // Singleton pattern to ensure only one PointsManager
+        
         if (Instance == null)
         {
             Instance = this;
@@ -25,16 +25,14 @@ public class PointsManager : MonoBehaviour
         UpdatePointsText();
     }
 
-    // Method to add points
     public void AddPoints(int points)
     {
         currentPoints += points;
         UpdatePointsText();
     }
-
-    // Update the text UI
+    
     private void UpdatePointsText()
     {
-        pointsText.text = "Points: " + currentPoints;
+        pointsText.text = "" + currentPoints;
     }
 }

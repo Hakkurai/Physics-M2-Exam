@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class GoldCoin : MonoBehaviour
 {
-    public int pointValue = 10;  // Points awarded for collecting this coin (adjust if needed)
+    public int pointValue = 10;  
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))  // Make sure the player has the "Player" tag
+        if (other.CompareTag("Player"))  
         {
-            PointsManager.Instance.AddPoints(pointValue);  // Add points using the singleton
-            Destroy(gameObject);  // Remove the coin
+            PointsManager.Instance.AddPoints(pointValue);  
+            Destroy(gameObject);  
         }
     }
 }
