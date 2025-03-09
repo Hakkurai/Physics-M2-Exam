@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections; // Needed for Coroutine
+using System.Collections; 
 
 public class KartController : MonoBehaviour
 {
@@ -13,40 +13,37 @@ public class KartController : MonoBehaviour
     private Vector3 moveDirection;
     private float defaultSpeed;
     private bool isBoosted = false;
-    private bool isSpinningOut = false; // 🟢 Added: Spin-out flag
-    private float spinOutEndTime;       // 🟢 Added: Spin-out timer
+    private bool isSpinningOut = false; 
+    private float spinOutEndTime;       
 
     void Start()
     {
-        defaultSpeed = speed; // Store the original speed
+        defaultSpeed = speed; 
     }
 
     void Update()
     {
-        if (!isSpinningOut) // 🟢 Skip movement if spinning out
+        if (!isSpinningOut) 
         {
-            // Get input
             float moveInput = -Input.GetAxis("Vertical");
             float turnInput = Input.GetAxis("Horizontal");
-
-            // Move forward/backward
+            
             Vector3 forwardMovement = transform.forward * moveInput * speed;
-
-            // Apply gravity
+            
             if (!controller.isGrounded)
             {
                 moveDirection.y -= gravity * Time.deltaTime;
             }
             else
             {
-                moveDirection.y = -0.1f; // Keeps it on the ground
+                moveDirection.y = -0.1f; 
             }
 
-            // Drift Mechanic
-            if (Input.GetKey(KeyCode.Space)) // Hold space to drift
+            
+            if (Input.GetKey(KeyCode.Space)) 
             {
-                speed = defaultSpeed * 1.2f; // Small speed boost while drifting
-                turnSpeed = 150f; // Increase turning ability
+                speed = defaultSpeed * 1.2f; 
+                turnSpeed = 150f; 
             }
             else
             {
@@ -54,18 +51,19 @@ public class KartController : MonoBehaviour
                 turnSpeed = 100f;
             }
 
-            // Move the kart
-            controller.Move((forwardMovement + moveDirection) * Time.deltaTime);
-
-            // Rotate the kart
+            controller.Move((forwardMovement + moveDirection) * Time.deltaTime);  
             transform.Rotate(0, turnInput * turnSpeed * Time.deltaTime, 0);
+
+            
         }
-        else if (Time.time >= spinOutEndTime) // 🟢 Check if spin-out should end
+        else if (Time.time >= spinOutEndTime) 
         {
-            RecoverFromSpinOut(); // 🟢 Recover from spin-out
+            RecoverFromSpinOut(); 
         }
 
-        // Adjust kart tilt on slopes
+        bool isMoving = Mathf.Abs(Input.GetAxis("Vertical")) > 0.1f;
+        AudioManager.Instance.PlayEngineSFX(isMoving);
+        
         AdjustTilt();
     }
 
@@ -84,7 +82,7 @@ public class KartController : MonoBehaviour
         }
     }
 
-    // ✅ Speed Boost Logic
+    
     public void ApplySpeedBoost(float boost, float duration)
     {
         if (!isBoosted)
@@ -98,25 +96,25 @@ public class KartController : MonoBehaviour
     private IEnumerator ResetSpeed(float duration)
     {
         yield return new WaitForSeconds(duration);
-        speed = defaultSpeed; // Reset speed after boost
+        speed = defaultSpeed; 
         isBoosted = false;
     }
 
-    // 🟢 Spin-out effect when hitting banana peel
+    
     public void SpinOut(float spinOutForce, float duration)
     {
         if (!isSpinningOut)
         {
             isSpinningOut = true;
             spinOutEndTime = Time.time + duration;
-            speed = 0;  // Stop forward movement
-            controller.Move(Vector3.zero); // Stop immediately
+            speed = 0;  
+            controller.Move(Vector3.zero); 
 
             StartCoroutine(SpinCoroutine(spinOutForce, duration));
         }
     }
 
-    // 🟢 Coroutine to handle spinning
+    
     private IEnumerator SpinCoroutine(float spinOutForce, float duration)
     {
         float elapsed = 0f;
@@ -128,11 +126,11 @@ public class KartController : MonoBehaviour
         }
     }
 
-    // 🟢 Recover from spin-out
+    
     private void RecoverFromSpinOut()
     {
         isSpinningOut = false;
-        speed = defaultSpeed;            // Restore speed
-        moveDirection = Vector3.zero;    // Stop any movement
+        speed = defaultSpeed;            
+        moveDirection = Vector3.zero;    
     }
 }

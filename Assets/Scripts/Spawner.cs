@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject[] prefabs; // Drag your 3 prefabs here in Inspector
+    public GameObject[] prefabs; 
     public int spawnCount = 3;
-    public Vector3 spawnAreaSize = new Vector3(5, 1, 5); // Adjust as needed
+    public Vector3 spawnAreaSize = new Vector3(5, 1, 5); 
 
     void Start()
     {

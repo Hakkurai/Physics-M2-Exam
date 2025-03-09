@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class LapStartTrigger : MonoBehaviour
 {
-    public Timer timerScript; // Reference to the Timer script
+    public Timer timerScript; 
 
-    private bool hasStarted = false; // Ensure the timer starts only once
+    private bool hasStarted = false; 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!hasStarted && other.CompareTag("Player")) // Check if player collides
+        if (!hasStarted && other.CompareTag("Player")) 
         {
             hasStarted = true;
-            timerScript.StartTimer(); // Call the StartTimer() method from Timer script
+            timerScript.StartTimer(); 
             Debug.Log("Timer Started!");
         }
     }

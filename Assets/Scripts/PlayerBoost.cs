@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class PlayerBoost : MonoBehaviour
 {
-    public float normalSpeed = 10f; // Default speed
-    public float boostedSpeed = 20f; // Speed when boosted
-    public float boostDuration = 5f; // Boost duration
+    public float normalSpeed = 10f; 
+    public float boostedSpeed = 20f; 
+    public float boostDuration = 5f; 
     private bool hasBoost = false;
     private bool isBoosting = false;
     private float boostEndTime = 0f;
@@ -31,9 +31,9 @@ public class PlayerBoost : MonoBehaviour
     private void ActivateBoost()
     {
         isBoosting = true;
-        hasBoost = false; // Consume the boost
+        hasBoost = false; 
         boostEndTime = Time.time + boostDuration;
-        GetComponent<KartController>().speed = boostedSpeed; // Apply boost
+        GetComponent<KartController>().speed = boostedSpeed; 
 
         Debug.Log("Speed Boost Activated!");
     }
@@ -41,7 +41,7 @@ public class PlayerBoost : MonoBehaviour
     private void DeactivateBoost()
     {
         isBoosting = false;
-        GetComponent<KartController>().speed = normalSpeed; // Revert to normal
+        GetComponent<KartController>().speed = normalSpeed; 
 
         Debug.Log("Speed Boost Ended!");
     }

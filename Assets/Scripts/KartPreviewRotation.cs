@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RotateKart : MonoBehaviour
 {
-    public float rotationSpeed = 30f; // Speed of rotation
+    public float rotationSpeed = 30f; 
 
     private void Update()
     {

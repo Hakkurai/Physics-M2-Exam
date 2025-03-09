@@ -4,7 +4,7 @@ public class DestroyOnCollision : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // Ensure the player has the correct tag
+        if (other.CompareTag("Player")) 
         {
             Destroy(gameObject);
             Debug.Log("Prefab Destroyed by Player Collision!");

@@ -1,39 +1,54 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance; // Singleton instance
+    public static AudioManager Instance;
 
     [Header("Audio Sources")]
-    public AudioSource bgmSource; // Background Music Source
-    public AudioSource sfxSource; // Sound Effects Source
+    public AudioSource bgmSource;
+    public AudioSource sfxSource;
 
     [Header("Audio Clips")]
-    public AudioClip menuBGM; // BGM for menu scene
-    public AudioClip gameBGM; // BGM for game scene
-    public AudioClip buttonSFX; // Sound effect for button hover/click
+    public AudioClip menuBGM;
+    public AudioClip gameBGM;
+    public AudioClip buttonSFX;
+    public AudioClip winSFX;
+    public AudioClip loseSFX;
+    public AudioClip coinSFX;
+    public AudioClip bananaSFX;
+
+    [Header("Car SFX")]
+    public AudioClip engineSFX; 
+
 
     [Header("Volume Settings")]
-    [Range(0f, 1f)] public float bgmVolume = 0.5f; // Default BGM volume
-    [Range(0f, 1f)] public float sfxVolume = 0.5f; // Default SFX volume
+    [Range(0f, 1f)] public float bgmVolume = 0.5f;
+    [Range(0f, 1f)] public float sfxVolume = 0.5f;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Keeps audio across scenes
+            DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded; 
         }
         else
         {
-            Destroy(gameObject); // Prevent duplicates
+            Destroy(gameObject);
         }
     }
 
     private void Start()
     {
         ApplyVolumeSettings();
-        PlayMenuBGM(); // Start with menu music
+        PlayMenuBGM();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        PlayCorrectBGM();  
     }
 
     public void PlayMenuBGM()
@@ -48,7 +63,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayGameBGM()
     {
-        if (bgmSource.clip != gameBGM)
+        if (bgmSource.clip != gameBGM || !bgmSource.isPlaying)
         {
             bgmSource.clip = gameBGM;
             bgmSource.loop = true;
@@ -64,14 +79,56 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // Method to apply volume settings
+    public void PlaySFX(AudioClip clip)
+    {
+        if (sfxSource != null && clip != null)
+        {
+            sfxSource.PlayOneShot(clip, sfxVolume);
+        }
+    }
+
+    public void PlayWinSFX()
+    {
+        if (sfxSource != null && winSFX != null)
+        {
+            sfxSource.PlayOneShot(winSFX, sfxVolume);
+        }
+    }
+
+    public void PlayLoseSFX()
+    {
+        if (sfxSource != null && loseSFX != null)
+        {
+            sfxSource.PlayOneShot(loseSFX, sfxVolume);
+        }
+    }
+
+    public void PlayEngineSFX(bool isMoving)
+    {
+        if (isMoving)
+        {
+            if (!sfxSource.isPlaying || sfxSource.clip != engineSFX)
+            {
+                sfxSource.clip = engineSFX;
+                sfxSource.loop = true;
+                sfxSource.Play();
+            }
+        }
+        else
+        {
+            if (sfxSource.isPlaying && sfxSource.clip == engineSFX)
+            {
+                sfxSource.Stop();
+            }
+        }
+    }
+
     public void ApplyVolumeSettings()
     {
         bgmSource.volume = bgmVolume;
         sfxSource.volume = sfxVolume;
     }
 
-    // Methods to adjust volume from UI sliders
     public void SetBGMVolume(float volume)
     {
         bgmVolume = volume;
@@ -82,5 +139,27 @@ public class AudioManager : MonoBehaviour
     {
         sfxVolume = volume;
         sfxSource.volume = sfxVolume;
+    }
+
+    public void StopBGM()
+    {
+        if (bgmSource.isPlaying)
+        {
+            bgmSource.Stop();
+        }
+    }
+
+    private void PlayCorrectBGM()
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+
+        if (sceneName == "MainMenu")
+        {
+            PlayMenuBGM();
+        }
+        else if (sceneName == "GameScene")
+        {
+            PlayGameBGM();
+        }
     }
 }

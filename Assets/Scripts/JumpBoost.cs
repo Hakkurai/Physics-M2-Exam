@@ -3,12 +3,12 @@ using System.Collections;
 
 public class JumpBoost : MonoBehaviour
 {
-    public float boostForce = 15f;  // Boost jump strength
-    public float rotationResetDelay = 0.5f; // Delay before resetting rotation
+    public float boostForce = 15f;  
+    public float rotationResetDelay = 0.5f; 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // Ensure the kart has the "Player" tag
+        if (other.CompareTag("Player")) 
         {
             KartController kart = other.GetComponent<KartController>();
             if (kart != null)
@@ -21,7 +21,7 @@ public class JumpBoost : MonoBehaviour
 
     private IEnumerator ResetRotationAfterDelay(KartController kart)
     {
-        yield return new WaitForSeconds(rotationResetDelay); // Wait before resetting
+        yield return new WaitForSeconds(rotationResetDelay); 
         Quaternion newRotation = Quaternion.Euler(0, kart.transform.rotation.eulerAngles.y, 0);
         kart.transform.rotation = newRotation;
     }

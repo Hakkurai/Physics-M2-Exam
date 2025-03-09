@@ -4,7 +4,7 @@ public class ItemBox : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // Ensure player collides with the box
+        if (other.CompareTag("Player")) 
         {
             Debug.Log("Player collided with Item Box!");
 
@@ -14,7 +14,7 @@ public class ItemBox : MonoBehaviour
                 playerBoost.EnableBoost();
             }
 
-            Destroy(gameObject); // Destroy the item box after pickup
+            Destroy(gameObject); 
             Debug.Log("Item Box Destroyed!");
         }
     }

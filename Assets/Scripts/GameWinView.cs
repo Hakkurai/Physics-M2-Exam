@@ -3,15 +3,19 @@ using UnityEngine.SceneManagement;
 
 public class GameWinView : MonoBehaviour
 {
-    // Called when the Retry button is clicked
-    public void OnRetryButtonClicked()
+    private void Start()
     {
-        SceneManager.LoadScene("GameScene");  // Replace with your actual game scene name
+        AudioManager.Instance.StopBGM();
+        AudioManager.Instance.PlayWinSFX();
     }
 
-    // Called when the Main Menu button is clicked
+    public void OnRetryButtonClicked()
+    {
+        SceneManager.LoadScene("GameScene"); // SceneManager will now auto-restart Game BGM
+    }
+
     public void OnMainMenuButtonClicked()
     {
-        SceneManager.LoadScene("MainMenu");  // Replace with your actual main menu scene name
+        SceneManager.LoadScene("MainMenu");
     }
 }

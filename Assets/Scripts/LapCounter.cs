@@ -1,33 +1,32 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;  // Import for scene management
+using UnityEngine.SceneManagement;  
 using TMPro;
 
 public class LapCounter : MonoBehaviour
 {
-    public TMP_Text lapText;        // Reference to the TMP text component
-    public int totalLaps = 3;       // Total number of laps
-    private int currentLap = 0;     // Track current lap
+    public TMP_Text lapText;        
+    public int totalLaps = 3;       
+    private int currentLap = 0;     
 
     private void Start()
     {
-        UpdateLapText();  // Initialize lap text
+        UpdateLapText();  
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the player enters the collider
+        
         if (other.CompareTag("EndLap"))
         {
             if (currentLap < totalLaps)
             {
-                currentLap++;        // Increment lap
-                UpdateLapText();     // Update UI
+                currentLap++;        
+                UpdateLapText();     
             }
 
-            // Check if all laps are completed
             if (currentLap >= totalLaps)
             {
-                GoToWinScene();      // Load WinScene
+                GoToWinScene();      
             }
         }
     }
@@ -39,6 +38,6 @@ public class LapCounter : MonoBehaviour
 
     private void GoToWinScene()
     {
-        SceneManager.LoadScene("WinScene");  // Change to WinScene
+        SceneManager.LoadScene("WinScene");  
     }
 }

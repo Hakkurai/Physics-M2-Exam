@@ -2,20 +2,21 @@ using UnityEngine;
 
 public class BananaPeel : MonoBehaviour
 {
-    // Spin-out force and duration
     public float spinOutForce = 500f;
     public float spinOutDuration = 2f;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // Make sure the kart has the tag "Player"
+        if (other.CompareTag("Player"))
         {
             KartController kart = other.GetComponent<KartController>();
             if (kart != null)
             {
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.bananaSFX); 
                 kart.SpinOut(spinOutForce, spinOutDuration);
-                Destroy(gameObject); // Remove the banana peel after collision
+                Destroy(gameObject);
             }
         }
     }
+
 }
