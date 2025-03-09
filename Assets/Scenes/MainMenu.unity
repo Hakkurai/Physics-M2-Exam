@@ -1143,6 +1143,8 @@ MonoBehaviour:
   menuBGM: {fileID: 8300000, guid: 89ff3741701f28743900dd449631cae0, type: 3}
   gameBGM: {fileID: 8300000, guid: b7d0d3780f1fa8d4684eb8d909dbf74c, type: 3}
   buttonSFX: {fileID: 8300000, guid: 9e2628bd74771ef43b45002e6e417e15, type: 3}
+  bgmVolume: 0.158
+  sfxVolume: 0.5
 --- !u!4 &652777515
 Transform:
   m_ObjectHideFlags: 0

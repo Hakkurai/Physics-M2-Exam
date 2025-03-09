@@ -13,6 +13,10 @@ public class AudioManager : MonoBehaviour
     public AudioClip gameBGM; // BGM for game scene
     public AudioClip buttonSFX; // Sound effect for button hover/click
 
+    [Header("Volume Settings")]
+    [Range(0f, 1f)] public float bgmVolume = 0.5f; // Default BGM volume
+    [Range(0f, 1f)] public float sfxVolume = 0.5f; // Default SFX volume
+
     private void Awake()
     {
         if (Instance == null)
@@ -28,6 +32,7 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
+        ApplyVolumeSettings();
         PlayMenuBGM(); // Start with menu music
     }
 
@@ -55,7 +60,27 @@ public class AudioManager : MonoBehaviour
     {
         if (sfxSource != null && buttonSFX != null)
         {
-            sfxSource.PlayOneShot(buttonSFX);
+            sfxSource.PlayOneShot(buttonSFX, sfxVolume);
         }
+    }
+
+    // Method to apply volume settings
+    public void ApplyVolumeSettings()
+    {
+        bgmSource.volume = bgmVolume;
+        sfxSource.volume = sfxVolume;
+    }
+
+    // Methods to adjust volume from UI sliders
+    public void SetBGMVolume(float volume)
+    {
+        bgmVolume = volume;
+        bgmSource.volume = bgmVolume;
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        sfxVolume = volume;
+        sfxSource.volume = sfxVolume;
     }
 }
