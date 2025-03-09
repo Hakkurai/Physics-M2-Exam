@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a791d73d9110d42a8887aa9be0f77e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boostAmount: 30
+  boostAmount: 35.9
   boostDuration: 2
 --- !u!1001 &1591231630994031616
 PrefabInstance:
